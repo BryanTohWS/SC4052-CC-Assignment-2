@@ -62,24 +62,6 @@ def build_transition_matrix(graph, url_index):
 
     return A
 
-def standard_pagerank(A, p=0.15, max_iter=100, tol=1e-6):
-    """
-    Standard PageRank with uniform teleportation E(u) = 1/n.
-    Used as the baseline for comparison against the heuristic.
-    """
-    n = A.shape[0]
-    R = np.ones(n) / n
-
-    for i in range(max_iter):
-        # Apply PageRank formula: follow links with prob (1-p), teleport uniformly to any page with prob p/n
-        R_new = (1 - p) * A.dot(R) + (p / n) * np.ones(n)
-        if np.linalg.norm(R_new - R, 1) < tol:
-            print(f"Standard PageRank converged in {i + 1} iterations")
-            return R_new
-        R = R_new
-
-    return R
-
 def personalised_pagerank(A, seed_indices, p=0.15, max_iter=100, tol=1e-6):
     """
     PageRank with teleportation biased towards AI seed pages.
